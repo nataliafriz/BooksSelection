@@ -1,17 +1,20 @@
 package cl.desafiolatam.booksselection.data
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface BooksDao{
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBooks(booksList: List<Books>)
 
     @Query("SELECT * FROM booksSelection")
-    fun getBooks(): List<Books>
+    fun getAllBooks(): LiveData<List<Books>>
 
+    @Query ("SELECT * FROM booksSelection WHERE id=:codeID" )
+    fun getBooksDetail(codeID :Int) : LiveData<Books>
 }
 
 @Database(entities = [Books::class],version=1)

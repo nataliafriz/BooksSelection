@@ -1,11 +1,12 @@
 package cl.desafiolatam.booksselection.data
 
+import androidx.lifecycle.LiveData
 import cl.desafiolatam.booksselection.api.RetrofitClient
 
 class Repository {
 
-    val database = BooksApplication.booksDatabase!!
-    val booksList = database.booksDao().getBooks()
+    val booksDatabase = BooksApplication.booksDatabase!!
+    val booksList = booksDatabase.booksDao().getAllBooks()
 
     suspend fun getBooksFromApi() {
 
@@ -14,13 +15,17 @@ class Repository {
         when (response.isSuccessful){
             true -> {
                 response.body()?.let {
-                    database.booksDao().insertBooks(it)
+                    booksDatabase.booksDao().insertBooks(it)
 
                 }
             }
-            false -> {
-
-            }
+            false -> { }
         }
+    }
+    fun getBooks(codeID: Int) : LiveData<Books> {
+        return booksDatabase.booksDao().getBooksDetail(codeID)
+    }
+    fun loadBooks(): LiveData<List<Books>> {
+        return booksDatabase.booksDao().getAllBooks()
     }
 }
