@@ -41,7 +41,6 @@ class BooksAdapter : RecyclerView.Adapter<BooksAdapter.BooksVH>() {
         fun bind(books: Books) {
             binding.tvTitle.text = books.title
             binding.tvAuthor.text = books.author
-            binding.tvId.text = books.id.toString()
             binding.ivBooks.load(books.image)
             Log.d("bind","$books")
 

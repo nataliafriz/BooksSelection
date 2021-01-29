@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import cl.desafiolatam.booksselection.R
 import cl.desafiolatam.booksselection.data.BooksAdapter
@@ -23,9 +25,10 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListBinding.inflate(layoutInflater)
-        binding.rvListbooks.layoutManager = LinearLayoutManager(context)
+        binding.rvListbooks.layoutManager = GridLayoutManager(context, 1)
         val adapter = BooksAdapter ()
         binding.rvListbooks.adapter = adapter
+        binding.rvListbooks.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         adapter.selectedItem().observe(viewLifecycleOwner,{
             viewModel.selected(it)
             activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_container,DetailFragment())?.addToBackStack("fragment Detail")?.commit()
